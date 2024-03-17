@@ -98,9 +98,9 @@ namespace DownscaleImageApp
                 return;
             }
 
-            if (scaleValue <= 0 || scaleValue > 10)
+            if (scaleValue < 0 || scaleValue > 1)
             {
-                MessageBox.Show("Please enter a scale factor between 0 and 1000 (percent).", "Scale Factor Out of Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter a scale factor between 0 and 100 %.", "Scale Factor Out of Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -127,10 +127,25 @@ namespace DownscaleImageApp
                 MessageBox.Show("Please load an image before resizing.", "No Source Image", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            
+            double scaleValue = Convert.ToDouble(numericDowncsalingFactor.Value) / 100.0;
 
+            if (scaleValue == 0)
+            {
+                var unchangedImage = new Bitmap(pictureBoxOriginal.Image);
+                DisplayNewImage(pictureBoxDownscaled, unchangedImage);
+                MessageBox.Show("Scale factor cannot be 0. The image will remain unchanged.", "Invalid Scale Factor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (scaleValue < 0 || scaleValue > 1)
+            {
+                MessageBox.Show("Please enter a scale factor between 0 and 100 %.", "Scale Factor Out of Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             var timer = Stopwatch.StartNew();
 
-            double scaleValue = Convert.ToDouble(numericDowncsalingFactor.Value) / 100.0;
+            
             int targetWidth = (int)(originalImageControl.Width * scaleValue);
             int targetHeight = (int)(originalImageControl.Height * scaleValue);
 

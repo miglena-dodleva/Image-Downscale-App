@@ -58,6 +58,11 @@
             this.numericDowncsalingFactor.BackColor = System.Drawing.Color.AliceBlue;
             this.numericDowncsalingFactor.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.numericDowncsalingFactor.Location = new System.Drawing.Point(389, 92);
+            this.numericDowncsalingFactor.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
             this.numericDowncsalingFactor.Name = "numericDowncsalingFactor";
             this.numericDowncsalingFactor.Size = new System.Drawing.Size(120, 22);
             this.numericDowncsalingFactor.TabIndex = 1;
