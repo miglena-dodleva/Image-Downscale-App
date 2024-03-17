@@ -25,13 +25,10 @@ namespace DownscaleImageApp
             numericDowncsalingFactor.Enabled = false;
 
             numericDowncsalingFactor.ValueChanged += numericDownscalingFactor_Changed;
-
-            //buttonSaveDownscaledImage.Click += buttonSaveDownscaledImage_Click;
         }
 
         private void numericDownscalingFactor_Changed(object sender, EventArgs e)
         {
-            //bool isFactorValid = numericDowncsalingFactor.Enabled && numericDowncsalingFactor.Value > 0;
 
             if(numericDowncsalingFactor.Enabled == true)
             {
@@ -107,14 +104,18 @@ namespace DownscaleImageApp
                 return;
             }
 
+            var timer = Stopwatch.StartNew();
+
             int targetWidth = (int)(originalImageControl.Width * scaleValue);
             int targetHeight = (int)(originalImageControl.Height * scaleValue);
 
             Bitmap sourceBitmap = originalImageControl as Bitmap;
             Bitmap newBitmap = DownscaleConsequentialBitmapAlgorithm.DownscaleConsequentialBitmap(sourceBitmap, targetWidth, targetHeight);
 
+            timer.Stop();
+
             DisplayNewImage(pictureBoxDownscaled, newBitmap);
-            DisplayCompletionMessage();
+            DisplayConsequentialPerformance(timer.ElapsedMilliseconds);
 
         }
 
@@ -139,7 +140,7 @@ namespace DownscaleImageApp
             timer.Stop();
 
             DisplayNewImage(pictureBoxDownscaled, newBitmap);
-            DisplayPerformance(timer.ElapsedMilliseconds);
+            DisplayParallelPerformance(timer.ElapsedMilliseconds);
         }
 
         private static void CopyPixelData(BitmapData sourceData, BitmapData destinationData, byte[] pixels, int originalX, int originalY, int x, int y, int pixelSize)
@@ -166,14 +167,14 @@ namespace DownscaleImageApp
             }
         }
 
-        private void DisplayCompletionMessage()
+        private void DisplayConsequentialPerformance(long milliseconds)
         {
-            MessageBox.Show("Resizing operation completed.", "Operation Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"Consequential downscaling operation completed.\nTotal time: {milliseconds} ms.", "Operation Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void DisplayPerformance(long milliseconds)
+        private void DisplayParallelPerformance(long milliseconds)
         {
-            MessageBox.Show($"Resizing operation completed successfully.\nTotal time: {milliseconds} ms.", "Operation Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"Parallel downscaing operation completed successfully.\nTotal time: {milliseconds} ms.", "Operation Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         }
 
